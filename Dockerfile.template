@@ -1,10 +1,10 @@
 # base-image for python on any machine using a template variable,
 # see more about dockerfile templates here: https://www.balena.io/docs/learn/develop/dockerfile/
-FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3-stretch-run
+FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3.9-stretch-build
 
 # use `install_packages` if you need to install dependencies,
 # for instance if you need git, just uncomment the line below.
-RUN install_packages git python3-rpi.gpio python3-spidev python3-pip python3-pil python3-numpy
+#RUN install_packages git python3-rpi.gpio python3-spidev python3-pip python3-pil python3-numpy
 
 # Set our working directory
 WORKDIR /usr/src/app
