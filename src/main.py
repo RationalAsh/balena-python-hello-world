@@ -6,12 +6,17 @@ from PIL import Image, ImageDraw
 import random
 import time
 import os
+import serial
 
 # Buttons
-BUTTON_A = 4
-BUTTON_B = 7
-BUTTON_X = 3
-BUTTON_Y = 0
+BUTTON_A = 23
+BUTTON_B = 4
+BUTTON_X = 22
+BUTTON_Y = 17
+BUTTON_LEFT = 21
+BUTTON_RIGHT = 13
+BUTTON_UP = 12
+BUTTON_DOWN = 20
 
 # Onboard RGB LED
 LED_R = 17
@@ -49,7 +54,8 @@ display = ST7789(
 
 while True:
     display.display(buffer)
-    time.sleep(1.0 / 60)
+    print("Successfully drew to screen.")
+    time.sleep(1.0)
 
 # if __name__ == '__main__':
 #     while True:
