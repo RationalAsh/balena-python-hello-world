@@ -5,6 +5,7 @@ from PIL import Image, ImageDraw
 
 import random
 import time
+import os
 
 # Buttons
 BUTTON_A = 4
@@ -19,7 +20,7 @@ LED_B = 22
 
 # General
 SPI_PORT = 0
-SPI_CS = 10
+SPI_CS = 0
 SPI_DC = 6
 BACKLIGHT = 5
 
@@ -49,3 +50,8 @@ display = ST7789(
 while True:
     display.display(buffer)
     time.sleep(1.0 / 60)
+
+# if __name__ == '__main__':
+#     while True:
+#         print([d for d in os.listdir('/dev') if 'spi' in d])
+#         time.sleep(1.0)
