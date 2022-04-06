@@ -26,8 +26,8 @@ LED_B = 22
 # General
 SPI_PORT = 0
 SPI_CS = 0
-SPI_DC = 6
-BACKLIGHT = 5
+SPI_DC = 25
+BACKLIGHT = 24
 
 # Screen dimensions
 WIDTH = 240
