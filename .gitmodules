@@ -1,0 +1,3 @@
+[submodule "frontend"]
+	path = frontend
+	url = git@bitbucket.org:yulab-ws/robot_ui.git
