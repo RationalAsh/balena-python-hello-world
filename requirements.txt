@@ -1,7 +1,3 @@
 Flask==0.12.3
 pyserial
-Pillow
-numpy
-spidev
-st7789
 RPi.Gpio
