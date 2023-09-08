@@ -7,7 +7,7 @@ import os
 from pathlib import Path
 import sys
 sys.path.append("/home/pi/Documents/exo_gui_flask_v2")
-from backend import utils
+import utils
 import toml
 from werkzeug.utils import secure_filename
 import subprocess

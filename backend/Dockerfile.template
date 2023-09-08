@@ -1,10 +1,12 @@
 # base-image for python on any machine using a template variable,
 # see more about dockerfile templates here: https://www.balena.io/docs/learn/develop/dockerfile/
-FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3.9-stretch-build
+FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3.9-buster-build
 
 # use `install_packages` if you need to install dependencies,
 # for instance if you need git, just uncomment the line below.
 #RUN install_packages git python3-rpi.gpio python3-spidev python3-pip python3-pil python3-numpy
+
+RUN install_packages cmake
 
 # Set our working directory
 WORKDIR /usr/src/app
@@ -22,4 +24,4 @@ COPY . ./
 ENV UDEV=1
 
 # main.py will run when container starts up on the device
-CMD ["python","-u","src/main.py"]
+CMD ["python","-u","main.py"]
