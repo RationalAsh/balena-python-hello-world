@@ -3,6 +3,7 @@ import serial
 import queue
 import time
 from pathlib import Path
+import msgpack
 
 # DEFAULT_CONFIG = {"serial":
 #                       {"port": '/dev/cu.usbmodem14401',
@@ -97,14 +98,14 @@ class SerialDataRecorder(threading.Thread):
         # Start an infinite loop
         MSG = None
         BYTES = 0
-        with open(self.logfile, 'w') as fp:
+        with open(self.logfile, 'wb') as fp:
             while True:
                 time.sleep(0.1)
 
                 if self.spobj.inWaiting() > 0:
                     serial_data = self.spobj.read(self.spobj.inWaiting())
-                    serial_str = serial_data.decode('utf-8')
-                    fp.write(serial_str)
+                    #serial_str = serial_data.decode('utf-8')
+                    fp.write(serial_data)
                     fp.flush()
                     BYTES += len(serial_data)
                 try:

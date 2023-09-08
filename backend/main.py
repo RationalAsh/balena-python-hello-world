@@ -269,7 +269,7 @@ def start_data_record():
     session_code = args.get('session')
     record_code = args.get('record')
 
-    HOMEDIR = Path.home()
+    HOMEDIR = Path('/data')
     logfilename = HOMEDIR / 'EXPDATA' / 'sub_{}'.format(patient_code) / \
                             'sess_{}'.format(session_code) / 'rec_{}.csv'.format(record_code)
 
