@@ -1,4 +1,6 @@
 version: '2.1'
+volumes: # Mount a data folder in the host to the container
+  resin-data:
 services:
   frontend:
     build: ./frontend
@@ -10,3 +12,5 @@ services:
       - "5050:5050"
     devices:
       - "/dev/ttyAMA0:/dev/ttyAMA0"
+    volumes: # Mount a data folder in the host to the container
+      - 'resin-data:/data'

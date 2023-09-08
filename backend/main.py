@@ -237,7 +237,7 @@ def ports():
     # Use a closure to filter out devices
     def filter_dev(dev_: str):
         dev = dev_.lower()
-        if ('cu' in dev.lower()) or ('usb' in dev.lower()) or ('acm' in dev.lower()):
+        if ('cu' in dev.lower()) or ('usb' in dev.lower()) or ('acm' in dev.lower()) or ('S0' in dev):
             return True
         else:
             return False
@@ -245,7 +245,7 @@ def ports():
     devs = os.listdir('/dev')
     filtered_devs = ['/dev/'+d for d in devs if filter_dev(d)]
 
-    response = {'response': filtered_devs, 'endpoint': request.path}
+    response = {'response': devs, 'endpoint': request.path}
     # response.headers.add('Access-Control-Allow-Origin', '*')
 
     return jsonify(response)

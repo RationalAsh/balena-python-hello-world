@@ -19,7 +19,7 @@ from pathlib import Path
 #                             "PFAssist Level": 0.5,
 #                             "DF Assist Level": 0.5}}}
 
-DEFAULT_SERIAL_SETTINGS = {"port": '/dev/ttyUSB0',
+DEFAULT_SERIAL_SETTINGS = {"port": '/dev/ttyS0',
                            "baud": 500000}
 DEFAULT_CONTROL_SETTINGS = [
     {"name": "Kp",
