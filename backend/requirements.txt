@@ -1,3 +1,5 @@
 Flask
 pyserial
 flask_cors
+toml
+pandas

@@ -3,3 +3,7 @@ services:
   frontend:
     build: ./frontend
     network_mode: host
+  backend:
+    build: ./backend
+    ports:
+      - "5050:5050"
