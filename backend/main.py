@@ -25,10 +25,10 @@ logging.getLogger('flask_cors').level = logging.DEBUG
 DATARECTHREAD = None
 
 # Path to configuration file.
-CONFIGPATH = Path.home() / '.exoskeleton' / 'config.toml'
+CONFIGPATH = Path('/data') / '.exoskeleton' / 'config.toml'
 
 # Path to the location of binary firmware file for programming micro-controller.
-FIRMWAREPATH = Path.home() / '.exoskeleton' / 'firmware.bin'
+FIRMWAREPATH = Path('/data') / '.exoskeleton' / 'firmware.bin'
 ALLOWED_EXTENSIONS = {'bin'}
 
 
@@ -39,7 +39,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['FIRMWARE-PATH'] = FIRMWAREPATH
 app.config['UPLOAD_FOLDER'] = FIRMWAREPATH.parent
 app.config['PYSTLINK'] = Path.home() / 'Documents' / 'pystlink' / 'pystlink.py'
-app.config['DATAPATH'] = Path.home() / 'EXPDATA'
+app.config['DATAPATH'] = Path('/data')
 
 
 # Endpoints to handle settings and other parameters
