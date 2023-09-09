@@ -2,9 +2,9 @@ version: '2.3'
 volumes: # Mount a data folder in the host to the container
   resin-data:
 services:
-#  frontend:
-#    build: ./frontend
-#    network_mode: host
+  frontend:
+    build: ./frontend
+    network_mode: host
   backend:
     build: ./backend
     privileged: true

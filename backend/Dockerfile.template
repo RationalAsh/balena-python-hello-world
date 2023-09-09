@@ -6,7 +6,7 @@ FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3.9-buster-build
 # for instance if you need git, just uncomment the line below.
 #RUN install_packages git python3-rpi.gpio python3-spidev python3-pip python3-pil python3-numpy
 
-RUN install_packages cmake
+RUN install_packages cmake dbus
 
 # Set our working directory
 WORKDIR /usr/src/app
@@ -24,10 +24,8 @@ COPY . ./
 ENV UDEV=1
 
 # Make the disable_serial_tty.sh script executable
-RUN chmod +x disable_serial_tty.sh
-
-# Disable the serial tty service on balenaOS
-RUN ./disable_serial_tty.sh
+RUN chmod +x start.sh
 
 # main.py will run when container starts up on the device
-CMD ["python","-u","main.py"]
+# CMD ["python","-u","main.py"]
+CMD ["./start.sh"]

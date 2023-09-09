@@ -28,3 +28,5 @@ DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket \
   org.freedesktop.systemd1.Manager.StopUnit \
   string:"serial-getty@serial0.service" \
   string:replace
+
+python -u main.py
