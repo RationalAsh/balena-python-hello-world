@@ -24,11 +24,18 @@ logging.getLogger('flask_cors').level = logging.DEBUG
 # Data recording thread
 DATARECTHREAD = None
 
+# Specify the working directory
+# If we're on macos, use the Home directory
+if sys.platform == 'darwin':
+    WORKINGDIR = Path.home()
+else:
+    WORKINGDIR = Path('/data')
+
 # Path to configuration file.
-CONFIGPATH = Path('/data') / '.exoskeleton' / 'config.toml'
+CONFIGPATH = WORKINGDIR / '.exoskeleton' / 'config.toml'
 
 # Path to the location of binary firmware file for programming micro-controller.
-FIRMWAREPATH = Path('/data') / '.exoskeleton' / 'firmware.bin'
+FIRMWAREPATH = WORKINGDIR / '.exoskeleton' / 'firmware.bin'
 ALLOWED_EXTENSIONS = {'bin'}
 
 
@@ -39,7 +46,7 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 app.config['FIRMWARE-PATH'] = FIRMWAREPATH
 app.config['UPLOAD_FOLDER'] = FIRMWAREPATH.parent
 app.config['PYSTLINK'] = Path.home() / 'Documents' / 'pystlink' / 'pystlink.py'
-app.config['DATAPATH'] = Path('/data')
+app.config['DATAPATH'] = WORKINGDIR
 
 
 # Endpoints to handle settings and other parameters
@@ -269,7 +276,7 @@ def start_data_record():
     session_code = args.get('session')
     record_code = args.get('record')
 
-    HOMEDIR = Path('/data')
+    HOMEDIR = WORKINGDIR
     logfilename = HOMEDIR / 'EXPDATA' / 'sub_{}'.format(patient_code) / \
                             'sess_{}'.format(session_code) / 'rec_{}.csv'.format(record_code)
 
@@ -353,6 +360,43 @@ def stop_data_record():
             DATARECTHREAD = None
             return jsonify({'endpoint': request.path, 'status': 'FINISHED'})
 
+@app.route('/data/files', methods=['GET'])
+def data_files():
+    """
+    Get list of data files.
+    :return:
+    """
+    # Read the query string with key 'path'
+    path = request.args.get('path')
+
+    # If path is None, then use the default path
+    if path is None:
+        path = WORKINGDIR / 'EXPDATA'
+    else:
+        path = WORKINGDIR / 'EXPDATA' / path
+
+    # Get list of all files and folders in the path
+    lsout = path.glob('*')
+
+    # Loop over the list and create a dictionary of files and folders
+    items = []
+    for i in lsout:
+        fileData = {
+            'name': i.parts[-1],
+            'id': str(i.parts[-1]),
+            'isDir': True if i.is_dir() else False,
+            'isHidden': False if i.parts[-1][0] in string.ascii_letters else True,
+        }
+
+        items.append(fileData)
+
+    # Create a response dictionary
+    response = {'endpoint': request.path,
+                'path': str(path),
+                'items': items}
+
+    return jsonify(response)
+
 @app.route('/data/subjects', methods=['GET'])
 def data_tree():
     """
@@ -360,9 +404,14 @@ def data_tree():
 
     :return:
     """
-    lsout = (Path.home() / 'EXPDATA').glob('*')
+    # Get list of all files and folders in the path
+    lsout = (WORKINGDIR / 'EXPDATA').glob('*')
 
+    # Get list of all folders
     dirs = [str(i.parts[-1]) for i in lsout if i.is_dir()]
+
+    # Remove folders that do not start with 'sub_'
+    dirs = [i for i in dirs if i[:4] == 'sub_']
 
     return jsonify({'endpoint': request.path, 'response': dirs})
 

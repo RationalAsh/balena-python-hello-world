@@ -20,7 +20,7 @@ import msgpack
 #                             "PFAssist Level": 0.5,
 #                             "DF Assist Level": 0.5}}}
 
-DEFAULT_SERIAL_SETTINGS = {"port": '/dev/ttyS0',
+DEFAULT_SERIAL_SETTINGS = {"port": '/dev/serial0',
                            "baud": 500000}
 DEFAULT_CONTROL_SETTINGS = [
     {"name": "Kp",

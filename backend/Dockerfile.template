@@ -6,7 +6,7 @@ FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3.9-buster-build
 # for instance if you need git, just uncomment the line below.
 #RUN install_packages git python3-rpi.gpio python3-spidev python3-pip python3-pil python3-numpy
 
-RUN install_packages cmake dbus
+RUN install_packages cmake dbus stlink-tools
 
 # Set our working directory
 WORKDIR /usr/src/app
