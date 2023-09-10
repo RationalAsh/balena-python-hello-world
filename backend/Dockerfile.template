@@ -6,7 +6,7 @@ FROM balenalib/%%BALENA_MACHINE_NAME%%-python:3.9-buster-build
 # for instance if you need git, just uncomment the line below.
 #RUN install_packages git python3-rpi.gpio python3-spidev python3-pip python3-pil python3-numpy
 
-RUN install_packages cmake dbus stlink-tools
+RUN install_packages cmake dbus stlink-tools wget nginx nginx-light
 
 # Set our working directory
 WORKDIR /usr/src/app
@@ -22,6 +22,12 @@ COPY . ./
 
 # Enable udevd so that plugged dynamic hardware devices show up in our container.
 ENV UDEV=1
+
+# Copy the build directory to /var/www/html/static
+COPY build /var/www/html/static
+
+# Copy over the nginx configuration file for nginx
+COPY nginx.conf /etc/nginx/nginx.conf
 
 # Make the disable_serial_tty.sh script executable
 RUN chmod +x start.sh

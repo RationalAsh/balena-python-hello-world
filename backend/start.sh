@@ -29,4 +29,8 @@ DBUS_SYSTEM_BUS_ADDRESS=unix:path=/host/run/dbus/system_bus_socket \
   string:"serial-getty@serial0.service" \
   string:replace
 
+# Start nginx (frontend)
+nginx
+
+# Start the backend
 python -u main.py
