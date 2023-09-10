@@ -1,1 +1,4 @@
 /img
+
+# Ignore the "node_modules" folder in the backend directory
+backend/node_modules
