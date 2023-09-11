@@ -17,6 +17,12 @@ COPY requirements.txt requirements.txt
 # pip install python deps from requirements.txt on the resin.io build server
 RUN pip install -r requirements.txt
 
+# Install some more packages - preparation for installing OpenOCD
+RUN install_packages git autoconf libtool make pkg-config libusb-1.0-0 libusb-1.0-0-dev
+
+# Clone OpenOCD from git
+RUN git clone https://github.com/openocd-org/openocd.git
+
 # This will copy all files in our root to the working  directory in the container
 COPY . ./
 
@@ -31,6 +37,24 @@ COPY nginx.conf /etc/nginx/nginx.conf
 
 # Make the disable_serial_tty.sh script executable
 RUN chmod +x start.sh
+
+# Now we go into the OpenOCD directory to build and install it
+WORKDIR /usr/src/app/openocd
+
+# Run the bootstrap script
+RUN ./bootstrap
+
+# Run the configure script
+RUN ./configure --enable-sysfsgpio --enable-bcm2835gpio
+
+# Run the make script
+RUN make
+
+# Run the make install script
+RUN make install
+
+# Set the working directory back to the app
+WORKDIR /usr/src/app
 
 # main.py will run when container starts up on the device
 # CMD ["python","-u","main.py"]

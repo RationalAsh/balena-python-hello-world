@@ -3,6 +3,7 @@ import serial
 import queue
 import time
 from pathlib import Path
+import sys
 import msgpack
 
 # DEFAULT_CONFIG = {"serial":
@@ -74,9 +75,11 @@ class SerialDataRecorder(threading.Thread):
         super(SerialDataRecorder, self).__init__()
         self.port = port
 
-        # If the port name does not start with /dev, then add it.
-        if not self.port.startswith('/dev'):
-            self.port = '/dev/' + self.port
+        # If we are not on windows
+        if sys.platform != 'win32':
+            # If the port name does not start with /dev, then add it.
+            if not self.port.startswith('/dev'):
+                self.port = '/dev/' + self.port
 
         self.baud = baud
         self.logfile = logfile
