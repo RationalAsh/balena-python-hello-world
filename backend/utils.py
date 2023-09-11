@@ -73,6 +73,11 @@ class SerialDataRecorder(threading.Thread):
                  record=1):
         super(SerialDataRecorder, self).__init__()
         self.port = port
+
+        # If the port name does not start with /dev, then add it.
+        if not self.port.startswith('/dev'):
+            self.port = '/dev/' + self.port
+
         self.baud = baud
         self.logfile = logfile
         self.patient = patient
