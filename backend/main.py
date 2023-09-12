@@ -415,6 +415,104 @@ def data_tree():
 
     return jsonify({'endpoint': request.path, 'response': dirs})
 
+
+@app.route('/data/sessions', methods=['GET'])
+def data_sessions():
+    """
+    List of sessions for a given subject.
+    :return:
+    """
+    # Read the query string with key subject
+    subject = request.args.get('subject')
+
+    # If subject was not specified, return an error message
+    if subject is None:
+        return jsonify({'endpoint': request.path,
+                        'error': 'NO SUBJECT SPECIFIED'})
+
+    # Get list of all files and folders in the path
+    lsout = (WORKINGDIR / 'EXPDATA' / subject).glob('*')
+
+    # Get list of all folders
+    dirs = [str(i.parts[-1]) for i in lsout if i.is_dir()]
+
+    # Remove folders that do not start with 'sess_'
+    dirs = [i for i in dirs if i[:5] == 'sess_']
+
+    return jsonify({'endpoint': request.path, 'response': dirs})
+
+@app.route('/data/records', methods=['GET'])
+def data_records():
+    """
+    List of records for a given subject and session.
+    :return:
+    """
+    # Read the query string with key subject
+    subject = request.args.get('subject')
+    # Read the query string with key session
+    session = request.args.get('session')
+
+    # If either subject or session was not specified, return an error message
+    if subject is None or session is None:
+        return jsonify({'endpoint': request.path,
+                        'error': 'NO SUBJECT OR SESSION SPECIFIED'})
+
+    # Get list of all files and folders in the path
+    lsout = (WORKINGDIR / 'EXPDATA' / subject / session).glob('*')
+
+    # Get list of all files
+    files = [str(i.parts[-1]) for i in lsout if i.is_file()]
+
+    # Remove files that do not start with 'rec_'
+    # files = [i for i in files if i[:4] == 'rec_']
+
+    return jsonify({'endpoint': request.path, 'response': files})
+
+
+@app.route('/data/record', methods=['GET'])
+def data_record():
+    """
+    Get data from a given record.
+    :return:
+    """
+    # Get the query string with key 'subject'
+    subject = request.args.get('subject')
+    # Get the query string with key 'session'
+    session = request.args.get('session')
+    # Get the query string with key 'record'
+    record = request.args.get('record')
+
+    # If any of the above are None, return an error message
+    if subject is None or session is None or record is None:
+        return jsonify({'endpoint': request.path,
+                        'error': 'NO SUBJECT, SESSION OR RECORD SPECIFIED'})
+
+    # Get the path to the record file
+    record_file = WORKINGDIR / 'EXPDATA' / subject / session / record
+
+    # If the file does not exist, return an error message
+    if not record_file.is_file():
+        return jsonify({'endpoint': request.path,
+                        'error': 'FILE NOT FOUND'})
+
+    # Read the file as a csv
+    df = pd.read_csv(record_file)
+
+    # Convert the dataframe to a python list of lists
+    data = df.values.tolist()
+
+    # Get the column names
+    columns = df.columns.tolist()
+
+    # Create a response dictionary
+    response = {'endpoint': request.path,
+                'response': {
+                    'data': data,
+                    'columns': columns
+                }}
+
+    return jsonify(response)
+
 if __name__ == '__main__':
 
     # Handle app configuration
