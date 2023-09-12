@@ -496,7 +496,11 @@ def data_record():
                         'error': 'FILE NOT FOUND'})
 
     # Read the file as a csv
-    df = pd.read_csv(record_file)
+    try:
+        df = pd.read_csv(record_file)
+    except:
+        return jsonify({'endpoint': request.path,
+                        'error': 'FILE READ ERROR'})
 
     # Convert the dataframe to a python list of lists
     data = df.values.tolist()
