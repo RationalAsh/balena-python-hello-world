@@ -20,3 +20,21 @@ echo $SWCLK > /sys/class/gpio/unexport
 echo $SRST > /sys/class/gpio/unexport
 
 echo "Ready for OpenOCD."
+
+openocd -c "adapter driver bcm2835gpio; \\
+bcm2835gpio peripheral_base 0xFE000000; \\
+bcm2835gpio speed_coeffs 236181 60; \\
+adapter gpio swclk $SWCLK; \\
+adapter gpio swdio $SWDIO; \\
+adapter gpio srst $SRST; \\
+transport select swd; \\
+set CHIPNAME stm32f446re; \\
+source [find target/stm32f4x.cfg]; \\
+reset_config srst_only; \\
+adapter speed 276; \\
+init; \\
+reset; \\
+reset; \\
+shutdown"
+
+echo "Done."
