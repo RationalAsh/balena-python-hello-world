@@ -35,6 +35,9 @@ adapter speed 276; \\
 init; \\
 reset; \\
 reset; \\
+halt; \\
+flash write_image erase build/STM32F446RETx_FLASH.bin 0x08000000; \\
+reset; \\
 shutdown"
 
 echo "Done."
