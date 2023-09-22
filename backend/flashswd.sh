@@ -27,16 +27,18 @@ bcm2835gpio speed_coeffs 236181 60; \\
 adapter gpio swclk $SWCLK; \\
 adapter gpio swdio $SWDIO; \\
 adapter gpio srst $SRST; \\
+adapter srst delay 100; \\
+adapter srst pulse_width 100; \\
 transport select swd; \\
 set CHIPNAME stm32f446re; \\
 source [find target/stm32f4x.cfg]; \\
-reset_config srst_only; \\
+reset_config srst_only srst_push_pull; \\
 adapter speed 276; \\
 init; \\
-reset; \\
-reset; \\
-halt; \\
-flash write_image erase build/STM32F446RETx_FLASH.bin 0x08000000; \\
+reset halt; \\
+stm32f2x mass_erase 0; \\
+flash write_image erase motor-controller.bin 0x08000000; \\
+flash verify_image motor-controller.bin 0x08000000; \\
 reset; \\
 shutdown"
 
