@@ -55,8 +55,8 @@ adapter speed 276; \\
 init; \\
 reset halt; \\
 stm32f2x mass_erase 0; \\
-flash write_image erase motor-controller.bin 0x08000000; \\
-flash verify_image motor-controller.bin 0x08000000; \\
+flash write_image erase firmware.bin 0x08000000; \\
+flash verify_image firmware.bin 0x08000000; \\
 reset; \\
 shutdown"
 

@@ -38,8 +38,14 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Make the disable_serial_tty.sh script executable
 RUN chmod +x start.sh
 
+# Make the flashswd.sh script executable
+RUN chmod +x flashswd.sh
+
 # Now we go into the OpenOCD directory to build and install it
 WORKDIR /usr/src/app/openocd
+
+# Check out to a known working commit
+RUN git checkout 870769b0ba9f4dae6ada9d8b1a40d75bd83aaa06
 
 # Run the bootstrap script
 RUN ./bootstrap
