@@ -1,5 +1,13 @@
 #!/bin/sh
 
+# This script is used to flash the firmware onto the motor controller using
+# OpenOCD. It is run by the backend container when the user clicks the "Flash
+# Firmware" button in the web interface.
+
+# Make the terminal echo commands
+set -x
+
+# The SWCLK and SRST pins are connected to the Raspberry Pi's GPIO pins.
 SWCLK=25
 SWDIO=24
 SRST=18
@@ -21,6 +29,16 @@ echo $SRST > /sys/class/gpio/unexport
 
 echo "Ready for OpenOCD."
 
+# Check that a file called "firmware.bin" exists in /data/.exoskeleton
+if [ ! -f /data/.exoskeleton/firmware.bin ]; then
+    echo "No firmware.bin file found in /data/.exoskeleton"
+    exit 1
+fi
+
+# Copy the file over to the current directory
+cp /data/.exoskeleton/firmware.bin .
+
+# Flash the firmware using OpenOCD
 openocd -c "adapter driver bcm2835gpio; \\
 bcm2835gpio peripheral_base 0xFE000000; \\
 bcm2835gpio speed_coeffs 236181 60; \\
